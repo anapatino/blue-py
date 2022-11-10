@@ -5,7 +5,8 @@ import Comments from "./comments/comments";
 import WeeklyComments from "./barChart/weeklyComments";
 import PositiveComments from "./areaChart/positiveComments";
 import ConnectedDevices from "./donutChart/connectedDevices";
-import CommentsNegative from "./lineChart/commentsNegative";
+
+import CommentsPeople from "./comments/commentsPeople";
 
 function App() {
   const { register, handleSubmit } = useForm();
@@ -61,13 +62,15 @@ function App() {
           css={{
             paddingTop: "$4",
             background: "$purpleDark",
+            height: "33rem",
+            width: "54rem",
             borderRadius: "25px",
           }}
         >
           <h3>Statistics</h3>
           <PositiveComments />
-          <Row>
-            <CommentsNegative />
+          <Row align="flex-start">
+            <CommentsPeople />
             <ConnectedDevices />
           </Row>
         </Container>
