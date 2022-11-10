@@ -29,7 +29,7 @@ function ConnectedDevices (){
             category="number"
             dataKey="devices"
             valueFormatter={ valueFormatter }
-            marginTop="mt-3"
+            marginTop="mt-8"
             height="h-40"
             colors={["green", "gray", "violet"]}
         />);
