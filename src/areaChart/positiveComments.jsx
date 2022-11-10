@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import { Card, AreaChart ,Title} from "@tremor/react";
+import {  AreaChart } from "@tremor/react";
 
 const chartdata = [
   {
@@ -35,18 +35,15 @@ const dataFormatter = (number) => {
 
 function PositiveComments (){
     return(
-        <Card>
-            <Title>Statistics</Title>
-            <AreaChart
+           <AreaChart
                 data={chartdata}
                 categories={["SemiAnalysis"]}
                 dataKey="date"
-                height="h-40"
+                height="h-60"
                 colors={["green"]}
                 valueFormatter={dataFormatter}
                 marginTop="mt-4"      
             />
-        </Card>
     );
 }
 

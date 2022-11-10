@@ -35,7 +35,7 @@ function Comments (){
                 fontWeight: "$semibold",
               }}
             >
-              Comentarios Positivos
+              Positive Comments
             </Text>
           </Col>
         </Row>
@@ -70,7 +70,7 @@ function Comments (){
                 fontWeight: "$semibold",
               }}
             >
-              Comentarios Neutrales
+              Neutral Comments
             </Text>
           </Col>
         </Row>
@@ -110,7 +110,7 @@ function Comments (){
                 fontWeight: "$semibold",
               }}
             >
-              Comentarios Negativos
+              Negative Comments
             </Text>
           </Col>
         </Row>

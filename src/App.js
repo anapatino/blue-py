@@ -1,10 +1,15 @@
 import "@tremor/react/dist/esm/tremor.css";
-import { Container, Grid, Row, Input } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import { Container, Grid, Row, Input, Button } from "@nextui-org/react";
 import Comments from "./comments/comments";
 import WeeklyComments from "./barChart/weeklyComments";
 import PositiveComments from "./areaChart/positiveComments";
+import ConnectedDevices from "./donutChart/connectedDevices";
+import CommentsNegative from "./lineChart/commentsNegative";
 
 function App() {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log(data);
   return (
     <Container
       css={{
@@ -22,20 +27,50 @@ function App() {
         </Grid>
       </div>
       <Container>
-        <Row wrap="wrap" align="center">
-          <h2>Dashboard</h2>
-          <Input
-            clearable
-            placeholder="Search variable"
-            color="$purpleDark"
-            css={{
-              marginLeft: "3rem",
-              width: "20rem",
-              height: "4rem",
-            }}
-          />
-        </Row>
-        <PositiveComments />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Row wrap="wrap" align="center">
+            <h2>Dashboard</h2>
+            <Input
+              clearable
+              bordered
+              placeholder="Search variable"
+              color="gradient"
+              css={{
+                marginLeft: "3rem",
+                width: "20rem",
+                height: "4rem",
+              }}
+              {...register("variable")}
+            />
+            <Button
+              auto
+              color="gradient"
+              bordered
+              css={{
+                marginLeft: "1rem",
+                width: "5rem",
+                height: "2.5rem",
+              }}
+              type="submit"
+            >
+              Send
+            </Button>
+          </Row>
+        </form>
+        <Container
+          css={{
+            paddingTop: "$4",
+            background: "$purpleDark",
+            borderRadius: "25px",
+          }}
+        >
+          <h3>Statistics</h3>
+          <PositiveComments />
+          <Row>
+            <CommentsNegative />
+            <ConnectedDevices />
+          </Row>
+        </Container>
       </Container>
     </Container>
   );

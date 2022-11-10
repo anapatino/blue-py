@@ -1,5 +1,5 @@
 
-import { Card,  BarChart } from "@tremor/react";
+import {   BarChart } from "@tremor/react";
 
 const chartdata = [
     {
@@ -45,17 +45,17 @@ const chartdata = [
 
 function WeeklyComments () {
     return(
-        <Card>
+      
         <BarChart 
           data={chartdata}
           dataKey="name"
           categories={["Positive","Neutral","Negative"]}
-          colors={["green", "stone", "purple"]}
+          colors={["green", "gray", "violet"]}
           valueFormatter={dataFormatter}
           yAxisWidth="w-12"
-          height="h-36"
+          height="h-48"
         />
-      </Card>
+      
     );
 }
 
