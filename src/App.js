@@ -5,12 +5,18 @@ import Comments from "./comments/comments";
 import WeeklyComments from "./barChart/weeklyComments";
 import PositiveComments from "./areaChart/positiveComments";
 import ConnectedDevices from "./donutChart/connectedDevices";
+import { useState } from "react";
 
 import CommentsPeople from "./comments/commentsPeople";
 
 function App() {
+  const [variable, setVariable] = useState("");
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setVariable(data.variable);
+    console.log(data);
+  };
+
   return (
     <Container
       css={{
@@ -70,7 +76,7 @@ function App() {
           <h3>Statistics</h3>
           <PositiveComments />
           <Row align="flex-start">
-            <CommentsPeople />
+            <CommentsPeople topic={variable} />
             <ConnectedDevices />
           </Row>
         </Container>

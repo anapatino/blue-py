@@ -1,7 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createTheme, NextUIProvider } from "@nextui-org/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App";
+
+const queryClient = new QueryClient();
 
 const theme = createTheme({
   type: "dark", // it could be "light" or "dark"
@@ -35,7 +38,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <NextUIProvider theme={theme}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </NextUIProvider>
   </React.StrictMode>
 );
