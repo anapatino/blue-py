@@ -25,14 +25,14 @@ const valueFormatter = ( number) => (
 
 function ConnectedDevices (props){
 
-   const getComments = () => {
+   const getConnectedDevices = () => {
         return apiClient
-          .get("search-tweets", { params: { topic: props.topic } })
+          .get("analytics-sources", { params: { topic: props.topic } })
           .then((res) => res.data);
     };
     
 
-  const query = useQuery("comments", getComments, {
+  const query = useQuery("sources", getConnectedDevices, {
     enabled: Boolean(props.topic),
   });
     return(

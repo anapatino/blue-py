@@ -35,13 +35,13 @@ const dataFormatter = (number) => {
 
 
 function PositiveComments (props){
-  const getComments = () => {
+  const getPositiveComments = () => {
     return apiClient
       .get("search-tweets", { params: { topic: props.topic } })
       .then((res) => res.data);
   };
 
-  const query = useQuery("comments", getComments, {
+  const query = useQuery("positiveComments", getPositiveComments, {
     enabled: Boolean(props.topic),
   });
     return(

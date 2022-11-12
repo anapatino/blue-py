@@ -45,13 +45,13 @@ const chartdata = [
   };
 
 function WeeklyComments (props) {
-  const getComments = () => {
+  const getWeeklyComments = () => {
     return apiClient
       .get("search-tweets", { params: { topic: props.topic } })
       .then((res) => res.data);
   };
 
-  const query = useQuery("comments", getComments, {
+  const query = useQuery("tweets", getWeeklyComments, {
     enabled: Boolean(props.topic),
   });
 

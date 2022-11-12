@@ -11,7 +11,7 @@ function Comments(props) {
       .then((res) => res.data);
   };
 
-  const query = useQuery("comments", getAnalyticSentiments, {
+  const query = useQuery("sentiments", getAnalyticSentiments, {
     enabled: Boolean(props.topic),
   });
 
