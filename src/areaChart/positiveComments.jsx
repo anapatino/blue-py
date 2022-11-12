@@ -1,4 +1,5 @@
-/* eslint-disable react/jsx-no-duplicate-props */
+import apiClient from "../data/http-common";
+import { useQuery } from "react-query";
 import {  AreaChart } from "@tremor/react";
 
 const chartdata = [
@@ -33,7 +34,16 @@ const dataFormatter = (number) => {
 };
 
 
-function PositiveComments (){
+function PositiveComments (props){
+  const getComments = () => {
+    return apiClient
+      .get("search-tweets", { params: { topic: props.topic } })
+      .then((res) => res.data);
+  };
+
+  const query = useQuery("comments", getComments, {
+    enabled: Boolean(props.topic),
+  });
     return(
            <AreaChart
                 data={chartdata}

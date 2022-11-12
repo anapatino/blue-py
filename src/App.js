@@ -4,7 +4,7 @@ import { Container, Grid, Row, Input, Button } from "@nextui-org/react";
 import Comments from "./comments/comments";
 import WeeklyComments from "./barChart/weeklyComments";
 import PositiveComments from "./areaChart/positiveComments";
-import ConnectedDevices from "./donutChart/connectedDevices";
+import ConnectedDevices from "./donutChart/connectedDevices.jsx";
 import { useState } from "react";
 
 import CommentsPeople from "./comments/commentsPeople";
@@ -29,8 +29,8 @@ function App() {
     >
       <div>
         <Grid xs={15} css={{ margin: "$15 $4" }}>
-          <Comments />
-          <WeeklyComments />
+          <Comments topic={variable} />
+          <WeeklyComments topic={variable} />
         </Grid>
       </div>
       <Container>
@@ -74,10 +74,10 @@ function App() {
           }}
         >
           <h3>Statistics</h3>
-          <PositiveComments />
+          <PositiveComments topic={variable} />
           <Row align="flex-start">
             <CommentsPeople topic={variable} />
-            <ConnectedDevices />
+            <ConnectedDevices topic={variable} />
           </Row>
         </Container>
       </Container>

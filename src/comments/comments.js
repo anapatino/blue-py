@@ -1,11 +1,23 @@
-import { Card, Text, Row, Col,Grid } from "@nextui-org/react";
+import { Card, Text, Row, Col, Grid } from "@nextui-org/react";
+import apiClient from "../data/http-common";
+import { useQuery } from "react-query";
 import button from "../assets/icons/button.png";
 import left from "../assets/icons/left.png";
 import top from "../assets/icons/top.png";
-function Comments (){
-    return (
-        <Grid>
-        <Card
+function Comments(props) {
+  const getAnalyticSentiments = () => {
+    return apiClient
+      .get("analytics-sentiments", { params: { topic: props.topic } })
+      .then((res) => res.data);
+  };
+
+  const query = useQuery("comments", getAnalyticSentiments, {
+    enabled: Boolean(props.topic),
+  });
+
+  return (
+    <Grid>
+      <Card
         variant="bordered"
         css={{
           margin: "$5 $2",
@@ -27,7 +39,7 @@ function Comments (){
                 fontWeight: "$bold",
               }}
             >
-              2.0k
+              {query.data != null ? query.data.good : "0"}
             </Text>
             <Text
               css={{
@@ -62,7 +74,7 @@ function Comments (){
                 fontWeight: "$bold",
               }}
             >
-              67k
+              {query.data != null ? query.data.neutral : "0"}
             </Text>
             <Text
               css={{
@@ -87,12 +99,7 @@ function Comments (){
       >
         <Row align="center" css={{ padding: "5px" }}>
           <Col css={{ width: "90px", paddingLeft: "10px" }}>
-            <img
-              alt="nextui logo"
-              src={button}
-              width="50px"
-              height="50px"
-            />
+            <img alt="nextui logo" src={button} width="50px" height="50px" />
           </Col>
           <Col css={{ paddingLeft: "10px" }}>
             <Text
@@ -102,7 +109,7 @@ function Comments (){
                 fontWeight: "$bold",
               }}
             >
-              8.0k
+              {query.data != null ? query.data.bad : "0"}
             </Text>
             <Text
               css={{
@@ -115,8 +122,8 @@ function Comments (){
           </Col>
         </Row>
       </Card>
-      </Grid>
-    );
+    </Grid>
+  );
 }
 
 export default Comments;

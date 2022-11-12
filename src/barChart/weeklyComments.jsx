@@ -1,5 +1,6 @@
-
-import {   BarChart } from "@tremor/react";
+import apiClient from "../data/http-common";
+import { useQuery } from "react-query";
+import { BarChart } from "@tremor/react";
 
 const chartdata = [
     {
@@ -43,9 +44,18 @@ const chartdata = [
     return "$ " + Intl.NumberFormat("us").format(number).toString();
   };
 
-function WeeklyComments () {
+function WeeklyComments (props) {
+  const getComments = () => {
+    return apiClient
+      .get("search-tweets", { params: { topic: props.topic } })
+      .then((res) => res.data);
+  };
+
+  const query = useQuery("comments", getComments, {
+    enabled: Boolean(props.topic),
+  });
+
     return(
-      
         <BarChart 
           data={chartdata}
           dataKey="name"

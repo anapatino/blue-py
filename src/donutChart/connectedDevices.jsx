@@ -1,4 +1,5 @@
-
+import apiClient from "../data/http-common";
+import { useQuery } from "react-query";
 import {  DonutChart } from '@tremor/react';
 
 const list = [
@@ -22,7 +23,18 @@ const valueFormatter = ( number) => (
 );
 
 
-function ConnectedDevices (){
+function ConnectedDevices (props){
+
+   const getComments = () => {
+        return apiClient
+          .get("search-tweets", { params: { topic: props.topic } })
+          .then((res) => res.data);
+    };
+    
+
+  const query = useQuery("comments", getComments, {
+    enabled: Boolean(props.topic),
+  });
     return(
     <DonutChart
             data={ list }
