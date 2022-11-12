@@ -9,16 +9,9 @@ function CommentsPeople(props) {
       .then((res) => res.data);
   };
 
-  const query = useQuery("comments", getComments, { enable: !!props.topic });
-
-  /*const query = useMutation((auth) => {
-    console.log("si entre");
-    return apiClient.get("search-tweets", auth).then((res) => res.data);
+  const query = useQuery("comments", getComments, {
+    enabled: Boolean(props.topic),
   });
-
-  if (props.topic != null) {
-    query.mutate({ topic: props.topic });
-  }*/
 
   return (
     <Container
