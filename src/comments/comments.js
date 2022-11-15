@@ -4,18 +4,22 @@ import { useQuery } from "react-query";
 import button from "../assets/icons/button.png";
 import left from "../assets/icons/left.png";
 import top from "../assets/icons/top.png";
-import { useEffect } from "react";
 function Comments(props) {
-  const getAnalyticSentiments = () => {
+  const getAnalyticSentiments = (topicName) => {
     return apiClient
-      .get("analytics-sentiments", { params: { topic: props.topic } })
+      .get("analytics-sentiments", { params: { topic: topicName } })
       .then((res) => res.data);
   };
-  useEffect(() => {});
-  const query = useQuery("sentiments", getAnalyticSentiments, {
-    enabled: !!props.topic,
-    retry: false,
-  });
+
+  const query = useQuery(
+    ["sentiments", props.topic],
+    () => getAnalyticSentiments(props.topic),
+    {
+      enabled: !!props.topic,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <Grid>

@@ -3,16 +3,21 @@ import apiClient from "../data/http-common";
 import { useQuery } from "react-query";
 
 function CommentsPeople(props) {
-  const getComments = () => {
+  const getAnalyticSentiments = (topicName) => {
     return apiClient
-      .get("search-tweets", { params: { topic: props.topic } })
+      .get("search-tweets", { params: { topic: topicName } })
       .then((res) => res.data);
   };
 
-  const query = useQuery("comments", getComments, {
-    enabled: !!props.topic,
-    retry: false,
-  });
+  const query = useQuery(
+    ["comments", props.topic],
+    () => getAnalyticSentiments(props.topic),
+    {
+      enabled: !!props.topic,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <Container
