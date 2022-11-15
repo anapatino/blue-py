@@ -35,7 +35,7 @@ const dataFormatter = (number) => {
 
 
 function PositiveComments (props){
-  const getPositiveComments = () => {
+  /*const getPositiveComments = () => {
     return apiClient
       .get("search-tweets", { params: { topic: props.topic } })
       .then((res) => res.data);
@@ -43,7 +43,7 @@ function PositiveComments (props){
 
   const query = useQuery("positiveComments", getPositiveComments, {
     enabled: Boolean(props.topic),
-  });
+  });*/
     return(
            <AreaChart
                 data={chartdata}

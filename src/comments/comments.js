@@ -4,15 +4,17 @@ import { useQuery } from "react-query";
 import button from "../assets/icons/button.png";
 import left from "../assets/icons/left.png";
 import top from "../assets/icons/top.png";
+import { useEffect } from "react";
 function Comments(props) {
   const getAnalyticSentiments = () => {
     return apiClient
       .get("analytics-sentiments", { params: { topic: props.topic } })
       .then((res) => res.data);
   };
-
+  useEffect(() => {});
   const query = useQuery("sentiments", getAnalyticSentiments, {
-    enabled: Boolean(props.topic),
+    enabled: !!props.topic,
+    retry: false,
   });
 
   return (

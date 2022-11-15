@@ -25,7 +25,7 @@ const valueFormatter = ( number) => (
 
 function ConnectedDevices (props){
 
-   const getConnectedDevices = () => {
+   /*const getConnectedDevices = () => {
         return apiClient
           .get("analytics-sources", { params: { topic: props.topic } })
           .then((res) => res.data);
@@ -34,7 +34,7 @@ function ConnectedDevices (props){
 
   const query = useQuery("sources", getConnectedDevices, {
     enabled: Boolean(props.topic),
-  });
+  });*/
     return(
     <DonutChart
             data={ list }

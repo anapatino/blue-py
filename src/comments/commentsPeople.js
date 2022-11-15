@@ -10,7 +10,8 @@ function CommentsPeople(props) {
   };
 
   const query = useQuery("comments", getComments, {
-    enabled: Boolean(props.topic),
+    enabled: !!props.topic,
+    retry: false,
   });
 
   return (
