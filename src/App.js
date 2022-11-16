@@ -1,10 +1,20 @@
 import "@tremor/react/dist/esm/tremor.css";
 import { useForm } from "react-hook-form";
-import { Container, Grid, Row, Input, Button } from "@nextui-org/react";
+import {
+  Container,
+  Grid,
+  Row,
+  Input,
+  Button,
+  Spacer,
+  Loading,
+} from "@nextui-org/react";
 import Comments from "./comments/comments";
 import WeeklyComments from "./barChart/weeklyComments";
 import PositiveComments from "./areaChart/positiveComments";
 import ConnectedDevices from "./donutChart/connectedDevices.jsx";
+import apiClient from "./data/http-common";
+import { useQuery } from "react-query";
 import { useState } from "react";
 
 import CommentsPeople from "./comments/commentsPeople";
@@ -12,9 +22,25 @@ import CommentsPeople from "./comments/commentsPeople";
 function App() {
   const [variable, setVariable] = useState("");
   const { register, handleSubmit } = useForm();
+
+  const getAnalyticSentiments = (topicName) => {
+    return apiClient
+      .get("search-tweets", { params: { topic: topicName } })
+      .then((res) => res.data);
+  };
+
+  const query = useQuery(
+    ["comments", variable],
+    () => getAnalyticSentiments(variable),
+    {
+      enabled: !!variable,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const onSubmit = (data) => {
     setVariable(data.variable);
-    console.log(data);
   };
 
   return (
@@ -27,12 +53,22 @@ function App() {
         gridTemplateColumns: "30% auto",
       }}
     >
-      <div>
-        <Grid xs={15} css={{ margin: "$15 $4" }}>
-          <Comments topic={variable} />
-          <WeeklyComments topic={variable} />
-        </Grid>
-      </div>
+      {query.data != null ? (
+        <div>
+          <Grid xs={15} css={{ margin: "$15 $4" }}>
+            <Comments topic={variable} />
+            <WeeklyComments topic={variable} />
+          </Grid>
+        </div>
+      ) : query.isLoading ? (
+        <div>
+          <Spacer />
+          <Loading size="xl" />
+          <Spacer />
+        </div>
+      ) : (
+        ""
+      )}
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row wrap="wrap" align="center">
@@ -73,12 +109,26 @@ function App() {
             borderRadius: "25px",
           }}
         >
-          <h3>Statistics</h3>
-          <PositiveComments topic={variable} />
-          <Row align="flex-start">
-            <CommentsPeople topic={variable} />
-            <ConnectedDevices topic={variable} />
-          </Row>
+          {query.data != null ? (
+            <div>
+              <h3>Statistics</h3>
+              <PositiveComments topic={variable} />
+              <Row align="flex-start">
+                <CommentsPeople topic={variable} />
+                <ConnectedDevices topic={variable} />
+              </Row>
+            </div>
+          ) : query.isLoading ? (
+            <div>
+              <Spacer />
+              <Loading
+                loadingCss={{ $$loadingSize: "100px", $$loadingBorder: "10px" }}
+              />
+              <Spacer />
+            </div>
+          ) : (
+            ""
+          )}
         </Container>
       </Container>
     </Container>

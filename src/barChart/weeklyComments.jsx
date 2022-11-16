@@ -39,7 +39,7 @@ function WeeklyComments (props) {
           data={data}
           dataKey="name"
           categories={["Positive","Neutral","Negative"]}
-          colors={["green", "gray", "violet"]}
+          colors={["teal", "gray", "violet"]}
           valueFormatter={dataFormatter}
           yAxisWidth="w-12"
           height="h-48"

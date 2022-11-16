@@ -22,7 +22,7 @@ const theme = createTheme({
       greenDark: "$green600",
 
       gradient:
-        "linear-gradient(112deg, $blue700 10%, $purple700 30%, $green700 80%)",
+        "linear-gradient(112deg, $blue700 10%, $purple700 30%, #14b8a6 80%)",
       backdropFilter: "saturate(180%) blur(10px)",
       boxShadow: "rgba(2, 1, 1, 0.1) 0px 5px 20px -5px",
       link: "#3694FF",

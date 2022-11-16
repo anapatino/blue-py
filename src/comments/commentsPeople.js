@@ -32,7 +32,7 @@ function CommentsPeople(props) {
 
       <Container
         css={{
-          height: "10rem",
+          height: "12rem",
           width: "25rem",
           overflowY: "auto",
         }}

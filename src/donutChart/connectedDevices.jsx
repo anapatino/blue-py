@@ -54,7 +54,7 @@ function ConnectedDevices(props) {
       valueFormatter={valueFormatter}
       marginTop="mt-8"
       height="h-40"
-      colors={["green", "gray", "violet"]}
+      colors={["teal", "violet","cyan", "indigo"]}
     />
   );
 }

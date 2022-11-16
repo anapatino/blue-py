@@ -1,33 +1,6 @@
 import apiClient from "../data/http-common";
 import { useQuery } from "react-query";
-import {  AreaChart } from "@tremor/react";
-
-const chartdata = [
-  {
-    date: "Jan 22",
-    SemiAnalysis: 2890,
-  },
-  {
-    date: "Feb 22",
-    SemiAnalysis: 2756,
-  },
-  {
-    date: "Mar 22",
-    SemiAnalysis: 3322,
-  },
-  {
-    date: "Apr 22",
-    SemiAnalysis: 3470,
-  },
-  {
-    date: "May 22",
-    SemiAnalysis: 3475,
-  },
-  {
-    date: "Jun 22",
-    SemiAnalysis: 3129,
-  },
-];
+import {  BarChart } from "@tremor/react";
 
 const dataFormatter = (number) => {
   return "$ " + Intl.NumberFormat("us").format(number).toString();
@@ -35,25 +8,46 @@ const dataFormatter = (number) => {
 
 
 function PositiveComments (props){
-  /*const getPositiveComments = () => {
+  let data =[];
+  const getAnalyticSentiments = (topicName) => {
     return apiClient
-      .get("search-tweets", { params: { topic: props.topic } })
+      .get("analytics-sources", { params: { topic: topicName } })
       .then((res) => res.data);
   };
 
-  const query = useQuery("positiveComments", getPositiveComments, {
-    enabled: Boolean(props.topic),
-  });*/
+  const query = useQuery(
+    ["sources", props.topic],
+    () => getAnalyticSentiments(props.topic),
+    {
+      enabled: !!props.topic,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+  // eslint-disable-next-line no-lone-blocks
+  {query.data != null ?
+    data = [
+      {
+        "Twitter Web App": query.data["Twitter Web App"],
+        "Twitter for Android": query.data["Twitter for Android"],
+        "Twitter for iPad": query.data["Twitter for iPad"],
+        "Twitter for iPhone": query.data["Twitter for iPhone"],
+      },
+     
+    ]
+    : data=[];
+ }
     return(
-           <AreaChart
-                data={chartdata}
-                categories={["SemiAnalysis"]}
-                dataKey="date"
-                height="h-60"
-                colors={["green"]}
-                valueFormatter={dataFormatter}
-                marginTop="mt-4"      
-            />
+        <BarChart 
+          data={data}
+          dataKey="name"
+          categories={["Twitter Web App","Twitter for Android","Twitter for iPad","Twitter for iPhone"]}
+          colors={["teal", "cyan", "emerald","indigo"]}
+          valueFormatter={dataFormatter}
+          yAxisWidth="w-10"
+          height="h-48"
+        />
+      
     );
 }
 
