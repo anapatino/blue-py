@@ -1,26 +1,8 @@
 import { Card, Text, Row, Col, Grid } from "@nextui-org/react";
-import apiClient from "../data/http-common";
-import { useQuery } from "react-query";
 import button from "../assets/icons/button.png";
 import left from "../assets/icons/left.png";
 import top from "../assets/icons/top.png";
 function Comments(props) {
-  const getAnalyticSentiments = (topicName) => {
-    return apiClient
-      .get("analytics-sentiments", { params: { topic: topicName } })
-      .then((res) => res.data);
-  };
-
-  const query = useQuery(
-    ["sentiments", props.topic],
-    () => getAnalyticSentiments(props.topic),
-    {
-      enabled: !!props.topic,
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
   return (
     <Grid>
       <Card
@@ -45,7 +27,7 @@ function Comments(props) {
                 fontWeight: "$bold",
               }}
             >
-              {query.data != null ? query.data.good : "0"}
+              {props.data != null ? props.data.good : "0"}
             </Text>
             <Text
               css={{
@@ -80,7 +62,7 @@ function Comments(props) {
                 fontWeight: "$bold",
               }}
             >
-              {query.data != null ? query.data.neutral : "0"}
+              {props.data != null ? props.data.neutral : "0"}
             </Text>
             <Text
               css={{
@@ -115,7 +97,7 @@ function Comments(props) {
                 fontWeight: "$bold",
               }}
             >
-              {query.data != null ? query.data.bad : "0"}
+              {props.data != null ? props.data.bad : "0"}
             </Text>
             <Text
               css={{

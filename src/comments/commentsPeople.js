@@ -1,24 +1,6 @@
 import { Container, Text } from "@nextui-org/react";
-import apiClient from "../data/http-common";
-import { useQuery } from "react-query";
 
 function CommentsPeople(props) {
-  const getAnalyticSentiments = (topicName) => {
-    return apiClient
-      .get("search-tweets", { params: { topic: topicName } })
-      .then((res) => res.data);
-  };
-
-  const query = useQuery(
-    ["comments", props.topic],
-    () => getAnalyticSentiments(props.topic),
-    {
-      enabled: !!props.topic,
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
   return (
     <Container
       css={{
@@ -37,8 +19,8 @@ function CommentsPeople(props) {
           overflowY: "auto",
         }}
       >
-        {query.data != null
-          ? query.data.map((message) => (
+        {props.data != null
+          ? props.data.map((message) => (
               <Container
                 key={message.id}
                 css={{

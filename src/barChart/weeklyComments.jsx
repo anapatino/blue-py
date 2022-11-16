@@ -1,5 +1,3 @@
-import apiClient from "../data/http-common";
-import { useQuery } from "react-query";
 import { BarChart } from "@tremor/react";
 
 const dataFormatter = (number) => {
@@ -8,27 +6,15 @@ const dataFormatter = (number) => {
 
 function WeeklyComments (props) {
   let data = [];
-  const getWeeklyComments = (topicName) => {
-    return apiClient
-      .get("analytics-sentiments", { params: { topic:topicName } })
-      .then((res) => res.data);
-  };
-
-  const query = useQuery(["tweets",props.topic], () => getWeeklyComments(props.topic), 
-  {
-    enabled: !!props.topic,
-    retry: false,
-    refetchOnWindowFocus: false,
-  }
-  );
+  
   // eslint-disable-next-line no-lone-blocks
-  {query.data != null ?
+  {props.data != null ?
      data = [
       {
         name: "Today",
-        "Positive": query.data.good,
-        "Neutral": query.data.neutral,
-        "Negative": query.data.bad,
+        "Positive": props.data.good,
+        "Neutral": props.data.neutral,
+        "Negative": props.data.bad,
         
       },
     ] : data=[];

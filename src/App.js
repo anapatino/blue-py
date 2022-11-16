@@ -4,6 +4,7 @@ import {
   Container,
   Grid,
   Row,
+  Text,
   Input,
   Button,
   Spacer,
@@ -19,19 +20,39 @@ import { useState } from "react";
 
 import CommentsPeople from "./comments/commentsPeople";
 
+const getTweets = (topicName, url) => {
+  return apiClient
+    .get(url, { params: { topic: topicName } })
+    .then((res) => res.data);
+};
+
 function App() {
   const [variable, setVariable] = useState("");
   const { register, handleSubmit } = useForm();
 
-  const getAnalyticSentiments = (topicName) => {
-    return apiClient
-      .get("search-tweets", { params: { topic: topicName } })
-      .then((res) => res.data);
-  };
-
   const query = useQuery(
     ["comments", variable],
-    () => getAnalyticSentiments(variable),
+    () => getTweets(variable, "search-tweets"),
+    {
+      enabled: !!variable,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const sentiments = useQuery(
+    ["sentiments", variable],
+    () => getTweets(variable, "analytics-sentiments"),
+    {
+      enabled: !!variable,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const source = useQuery(
+    ["source", variable],
+    () => getTweets(variable, "analytics-sources"),
     {
       enabled: !!variable,
       retry: false,
@@ -56,8 +77,8 @@ function App() {
       {query.data != null ? (
         <div>
           <Grid xs={15} css={{ margin: "$15 $4" }}>
-            <Comments topic={variable} />
-            <WeeklyComments topic={variable} />
+            <Comments data={sentiments.data} />
+            <WeeklyComments data={sentiments.data} />
           </Grid>
         </div>
       ) : query.isLoading ? (
@@ -72,16 +93,24 @@ function App() {
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row wrap="wrap" align="center">
-            <h2>Dashboard</h2>
+            <Text
+              css={{
+                marginRight: "3rem",
+                fontSize: "2.3rem",
+                fontWeight: "bold",
+              }}
+            >
+              Dashboard
+            </Text>
             <Input
               clearable
               bordered
               placeholder="Search variable"
               color="gradient"
               css={{
-                marginLeft: "3rem",
                 width: "20rem",
                 height: "4rem",
+                marginRight: "1rem",
               }}
               {...register("variable")}
             />
@@ -90,7 +119,6 @@ function App() {
               color="gradient"
               bordered
               css={{
-                marginLeft: "1rem",
                 width: "5rem",
                 height: "2.5rem",
               }}
@@ -100,36 +128,36 @@ function App() {
             </Button>
           </Row>
         </form>
-        <Container
-          css={{
-            paddingTop: "$4",
-            background: "$purpleDark",
-            height: "33rem",
-            width: "54rem",
-            borderRadius: "25px",
-          }}
-        >
-          {query.data != null ? (
-            <div>
+        {query.data != null ? (
+          <div>
+            <Container
+              css={{
+                paddingTop: "$4",
+                background: "$purpleDark",
+                height: "33rem",
+                width: "54rem",
+                borderRadius: "25px",
+              }}
+            >
               <h3>Statistics</h3>
-              <PositiveComments topic={variable} />
+              <PositiveComments data={source.data} />
               <Row align="flex-start">
-                <CommentsPeople topic={variable} />
-                <ConnectedDevices topic={variable} />
+                <CommentsPeople data={query.data} />
+                <ConnectedDevices data={source.data} />
               </Row>
-            </div>
-          ) : query.isLoading ? (
-            <div>
-              <Spacer />
-              <Loading
-                loadingCss={{ $$loadingSize: "100px", $$loadingBorder: "10px" }}
-              />
-              <Spacer />
-            </div>
-          ) : (
-            ""
-          )}
-        </Container>
+            </Container>
+          </div>
+        ) : query.isLoading ? (
+          <div>
+            <Spacer />
+            <Loading
+              loadingCss={{ $$loadingSize: "100px", $$loadingBorder: "10px" }}
+            />
+            <Spacer />
+          </div>
+        ) : (
+          ""
+        )}
       </Container>
     </Container>
   );
